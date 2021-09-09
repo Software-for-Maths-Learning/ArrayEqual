@@ -3,9 +3,25 @@
   "title": "Generic schema for the data passed to a grading cloud function.",
   "type": "object",
   "properties": {
-    "response": {},
-    "answer": {},
-    "params": {}
+    "response": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "answer": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "atol": { "type": "number" },
+        "rtol": { "type": "number" }
+      }
+    }
   },
   "required": ["response", "answer"],
   "additionalProperties": false

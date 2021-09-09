@@ -46,7 +46,7 @@ class TestSchemaValidation(unittest.TestCase):
         )
 
     def test_valid_grading_data(self):
-        body = {"response": "", "answer": ""}
+        body = {"response": [1, 2], "answer": [2, 1]}
 
         validation_error = validate_request(body)
 
