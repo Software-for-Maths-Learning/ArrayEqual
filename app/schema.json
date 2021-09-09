@@ -6,13 +6,13 @@
     "response": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": ["number", "array"]
       }
     },
     "answer": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": ["number", "array"]
       }
     },
     "params": {
