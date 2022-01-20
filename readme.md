@@ -1,4 +1,4 @@
-# IsSimilar Grading Script
+# ArrayEqual Grading Script
 
 Grading script checks if the supplied response and answer arrays are within the optionally supplied tolerances. This is based on the [numpy.allclose](https://numpy.org/doc/stable/reference/generated/numpy.allclose.html) function. Numpy is a dependancy for this function, but it means that arrays of any shape (regular) can be compared efficiently.
 
