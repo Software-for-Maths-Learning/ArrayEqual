@@ -1,11 +1,11 @@
 import numpy as np
 
 
-def grading_function(body: dict) -> dict:
+def evaluation_function(body: dict) -> dict:
     """
-    Function used to grade a student response.
+    Function used to evaluate a student response.
     ---
-    The handler function passes only one argument to grading_function(),
+    The handler function passes only one argument to evaluation_function(),
     which is a dictionary of the structure of the API request body
     deserialised from JSON.
 
@@ -18,7 +18,7 @@ def grading_function(body: dict) -> dict:
 
     The way you wish to structure you code (all in this function, or
     split into many) is entirely up to you. All that matters are the
-    return types and that grading_function() is the main function used
+    return types and that evaluation_function() is the main function used
     to output the grading response.
     """
 
@@ -27,8 +27,10 @@ def grading_function(body: dict) -> dict:
     except Exception as e:
         return {
             "error": {
-                "culprit": "user",
-                "description": f"Failed to parse response using `np.array` [{repr(e)}]",
+                "culprit":
+                "user",
+                "description":
+                f"Failed to parse response using `np.array` [{repr(e)}]",
             }
         }
 
@@ -37,8 +39,10 @@ def grading_function(body: dict) -> dict:
     except Exception as e:
         return {
             "error": {
-                "culprit": "author",
-                "description": f"Failed to parse response using `np.array` [{repr(e)}]",
+                "culprit":
+                "author",
+                "description":
+                f"Failed to parse response using `np.array` [{repr(e)}]",
             }
         }
 

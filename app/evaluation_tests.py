@@ -1,9 +1,9 @@
 import unittest
 
-from ..algorithm import grading_function
+from .evaluation import evaluation_function
 
 
-class TestGradingFunction(unittest.TestCase):
+class TestEvaluationFunction(unittest.TestCase):
     """
     TestCase Class used to test the algorithm.
     ---
@@ -18,21 +18,21 @@ class TestGradingFunction(unittest.TestCase):
     Read the docs on how to use unittest here:
     https://docs.python.org/3/library/unittest.html
 
-    Use grading_function() to check your algorithm works
+    Use evaluation_function() to check your algorithm works
     as it should.
     """
 
     def test_no_tolerance_correct(self):
         body = {"response": [1, 2], "answer": [1, 2]}
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), True)
 
     def test_no_tolerance_incorrect(self):
         body = {"response": [1, 2], "answer": [1, 2.1]}
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), False)
 
@@ -40,10 +40,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [1, 2],
             "answer": [1, 2.1],
-            "params": {"atol": 0.12},
+            "params": {
+                "atol": 0.12
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), True)
 
@@ -51,10 +53,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [1, 2],
             "answer": [1, 2.2],
-            "params": {"atol": 0.12},
+            "params": {
+                "atol": 0.12
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), False)
 
@@ -62,10 +66,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [1, 1.91],
             "answer": [1, 2],
-            "params": {"atol": 0.1},
+            "params": {
+                "atol": 0.1
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), True)
 
@@ -73,10 +79,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [1, 1.8],
             "answer": [1, 2],
-            "params": {"atol": 0.1},
+            "params": {
+                "atol": 0.1
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), False)
 
@@ -86,7 +94,7 @@ class TestGradingFunction(unittest.TestCase):
             "answer": [[1, 1], [1, 1]],
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), True)
 
@@ -96,7 +104,7 @@ class TestGradingFunction(unittest.TestCase):
             "answer": [[1, 1], [1, 0]],
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), False)
 
@@ -104,10 +112,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [[[1, 1], [2, 1]], [[2, 1.2], [2, 2]]],
             "answer": [[[1, 1], [2, 1.1]], [[2, 1], [2, 2]]],
-            "params": {"atol": 1},
+            "params": {
+                "atol": 1
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("is_correct"), True)
 
@@ -117,7 +127,7 @@ class TestGradingFunction(unittest.TestCase):
             "answer": [[1, 1], [1, 1]],
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("error", {}).get("culprit"), "user")
 
@@ -125,10 +135,12 @@ class TestGradingFunction(unittest.TestCase):
         body = {
             "response": [[1.2, 1], [1, 2]],
             "answer": [1, [1, 2]],
-            "params": {"atol": 3},
+            "params": {
+                "atol": 3
+            },
         }
 
-        response = grading_function(body)
+        response = evaluation_function(body)
 
         self.assertEqual(response.get("error", {}).get("culprit"), "author")
 
