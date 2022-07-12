@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def evaluation_function(body: dict) -> dict:
+def evaluation_function(response, answer, params) -> dict:
     """
     Function used to evaluate a student response.
     ---
@@ -23,31 +23,19 @@ def evaluation_function(body: dict) -> dict:
     """
 
     try:
-        res = np.array(body["response"], dtype=np.float32)
+        res = np.array(response, dtype=np.float32)
     except Exception as e:
-        return {
-            "error": {
-                "culprit":
-                "user",
-                "description":
-                f"Failed to parse response using `np.array` [{repr(e)}]",
-            }
-        }
+        raise SyntaxError(
+            f"Failed to parse response using `np.array` [{repr(e)}]")
 
     try:
-        ans = np.array(body["answer"], dtype=np.float32)
+        ans = np.array(answer, dtype=np.float32)
     except Exception as e:
-        return {
-            "error": {
-                "culprit":
-                "author",
-                "description":
-                f"Failed to parse response using `np.array` [{repr(e)}]",
-            }
-        }
+        raise SyntaxError(
+            f"Failed to parse answer using `np.array` [{repr(e)}]")
 
-    rtol = body.get("params", {}).get("rtol", 0)
-    atol = body.get("params", {}).get("atol", 0)
+    rtol = params.get("rtol", 0)
+    atol = params.get("atol", 0)
 
     is_correct = np.allclose(res, ans, rtol=rtol, atol=atol)
 

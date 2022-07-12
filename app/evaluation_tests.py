@@ -23,126 +23,81 @@ class TestEvaluationFunction(unittest.TestCase):
     """
 
     def test_no_tolerance_correct(self):
-        body = {"response": [1, 2], "answer": [1, 2]}
+        response = [1, 2]
+        answer = [1, 2]
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, {})
 
         self.assertEqual(response.get("is_correct"), True)
 
     def test_no_tolerance_incorrect(self):
-        body = {"response": [1, 2], "answer": [1, 2.1]}
+        response = [1, 2]
+        answer = [1, 2.1]
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, {})
 
         self.assertEqual(response.get("is_correct"), False)
 
     def test_atol_correct(self):
-        body = {
-            "response": [1, 2],
-            "answer": [1, 2.1],
-            "params": {
-                "atol": 0.12
-            },
-        }
+        response = [1, 2]
+        answer = [1, 2.1]
+        params = {"atol": 0.12}
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, params)
 
         self.assertEqual(response.get("is_correct"), True)
 
     def test_atol_incorrect(self):
-        body = {
-            "response": [1, 2],
-            "answer": [1, 2.2],
-            "params": {
-                "atol": 0.12
-            },
-        }
+        response = [1, 2]
+        answer = [1, 2.2]
+        params = {"atol": 0.12}
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, params)
 
         self.assertEqual(response.get("is_correct"), False)
 
     def test_rtol_correct(self):
-        body = {
-            "response": [1, 1.91],
-            "answer": [1, 2],
-            "params": {
-                "atol": 0.1
-            },
-        }
+        response = [1, 1.91]
+        answer = [1, 2]
+        params = {"atol": 0.1}
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, params)
 
         self.assertEqual(response.get("is_correct"), True)
 
     def test_rtol_incorrect(self):
-        body = {
-            "response": [1, 1.8],
-            "answer": [1, 2],
-            "params": {
-                "atol": 0.1
-            },
-        }
+        response = [1, 1.8]
+        answer = [1, 2]
+        params = {"atol": 0.1}
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, params)
 
         self.assertEqual(response.get("is_correct"), False)
 
     def test_2D_correct(self):
-        body = {
-            "response": [[1, 1], [1, 1]],
-            "answer": [[1, 1], [1, 1]],
-        }
+        response = [[1, 1], [1, 1]]
+        answer = [[1, 1], [1, 1]]
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, {})
 
         self.assertEqual(response.get("is_correct"), True)
 
     def test_2D_incorrect(self):
-        body = {
-            "response": [[1, 1], [1, 1]],
-            "answer": [[1, 1], [1, 0]],
-        }
+        response = [[1, 1], [1, 1]]
+        answer = [[1, 1], [1, 0]]
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, {})
 
         self.assertEqual(response.get("is_correct"), False)
 
     def test_3D_correct(self):
-        body = {
-            "response": [[[1, 1], [2, 1]], [[2, 1.2], [2, 2]]],
-            "answer": [[[1, 1], [2, 1.1]], [[2, 1], [2, 2]]],
-            "params": {
-                "atol": 1
-            },
-        }
+        response = [[[1, 1], [2, 1]], [[2, 1.2], [2, 2]]],
+        answer = [[[1, 1], [2, 1.1]], [[2, 1], [2, 2]]]
+        params = {"atol": 1}
 
-        response = evaluation_function(body)
+        response = evaluation_function(response, answer, params)
 
         self.assertEqual(response.get("is_correct"), True)
-
-    def test_invalid_shape_user(self):
-        body = {
-            "response": [1, [1, 1]],
-            "answer": [[1, 1], [1, 1]],
-        }
-
-        response = evaluation_function(body)
-
-        self.assertEqual(response.get("error", {}).get("culprit"), "user")
-
-    def test_invalid_shape_author(self):
-        body = {
-            "response": [[1.2, 1], [1, 2]],
-            "answer": [1, [1, 2]],
-            "params": {
-                "atol": 3
-            },
-        }
-
-        response = evaluation_function(body)
-
-        self.assertEqual(response.get("error", {}).get("culprit"), "author")
 
 
 if __name__ == "__main__":
