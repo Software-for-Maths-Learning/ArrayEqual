@@ -1,4 +1,5 @@
 import numpy as np
+from evaluation_function_utils.errors import EvaluationException
 
 
 def evaluation_function(response, answer, params) -> dict:
@@ -25,14 +26,14 @@ def evaluation_function(response, answer, params) -> dict:
     try:
         res = np.array(response, dtype=np.float32)
     except Exception as e:
-        raise SyntaxError(
-            f"Failed to parse response using `np.array` [{repr(e)}]")
+        raise EvaluationException(f"Failed to parse user response",
+                                  detail=repr(e))
 
     try:
         ans = np.array(answer, dtype=np.float32)
     except Exception as e:
-        raise SyntaxError(
-            f"Failed to parse answer using `np.array` [{repr(e)}]")
+        raise EvaluationException(f"Failed to parse correct answer",
+                                  detail=repr(e))
 
     rtol = params.get("rtol", 0)
     atol = params.get("atol", 0)
