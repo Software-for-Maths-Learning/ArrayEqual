@@ -59,7 +59,7 @@ def process_element(element):
     else:
         if isinstance(element,str):
             element = element.strip()
-            if len(element) == 0:
+            if len(element) == 0 or "element" == "undefined":
                 is_ok = False
             else:
                 element = float(element)
