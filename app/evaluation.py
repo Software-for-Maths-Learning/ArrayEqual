@@ -23,6 +23,13 @@ def evaluation_function(response, answer, params) -> dict:
     to output the grading response.
     """
 
+    answer_ok = process_element(answer)
+    if not answer_ok:
+        raise Exception("Answer has empty fields.")
+    response_ok = process_element(response)
+    if not response_ok:
+        return {"is_correct": False, "feedback": "Response has empty fields."}
+
     try:
         res = np.array(response, dtype=np.float32)
     except Exception as e:
@@ -43,3 +50,17 @@ def evaluation_function(response, answer, params) -> dict:
     # TODO: If incorrect, could compute which cells are, and return as feedback
 
     return {"is_correct": is_correct}
+
+def process_element(element):
+    is_ok = True
+    if isinstance(element,list):
+        for e in element:
+            is_ok = process_element(e)
+    else:
+        if isinstance(element,str):
+            element = element.strip()
+            if len(element) == 0:
+                is_ok = False
+            else:
+                element = float(element)
+    return is_ok
