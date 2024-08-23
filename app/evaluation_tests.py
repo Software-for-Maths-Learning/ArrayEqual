@@ -118,7 +118,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = [[1, 1], [1, 1]]
         answer = [[1, 1], [1, 0]]
 
-        response = evaluation_function(response, answer, {"feedback_for_incorrect_case": "Custom feedback"})
+        response = evaluation_function(response, answer, {"feedback_for_incorrect_response": "Custom feedback"})
 
         self.assertEqual(response.get("is_correct"), False)
         self.assertEqual(response["feedback"], "Custom feedback")
