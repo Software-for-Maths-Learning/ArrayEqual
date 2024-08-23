@@ -4,7 +4,7 @@ This function is used to compare two number arrays/vectors/matrices, provided ab
 
 ### Optional parameters
 
-There is one optional parameter: `feedback_for_incorrect_case`.
+There is one optional parameter: `feedback_for_incorrect_response`.
 
-## `feedback_for_incorrect_case`
+## `feedback_for_incorrect_response`
 All feedback for all incorrect responses will be replaced with the string that this parameter is set to.

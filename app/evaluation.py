@@ -54,10 +54,10 @@ def evaluation_function(response, answer, params) -> dict:
 
     is_correct = np.allclose(res, ans, rtol=rtol, atol=atol)
 
-    if is_correct is False and params.get("feedback_for_incorrect_case", None) is not None:
+    if is_correct is False and params.get("feedback_for_incorrect_response", None) is not None:
         return {
             "is_correct": is_correct,
-            "feedback": params["feedback_for_incorrect_case"]
+            "feedback": params["feedback_for_incorrect_response"]
         }
 
     # TODO: If incorrect, could compute which cells are, and return as feedback
