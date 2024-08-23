@@ -28,27 +28,39 @@ def evaluation_function(response, answer, params) -> dict:
         raise Exception("Answer has empty fields.")
     response_ok = process_element(response)
     if not response_ok:
-        return {"is_correct": False, "feedback": "Response has empty fields."}
+        return {
+            "is_correct": False,
+            "feedback": "Response has empty fields."
+        }
 
     try:
         res = np.array(response, dtype=np.float32)
     except Exception as e:
-        raise EvaluationException(f"Failed to parse user response",
-                                  detail=repr(e))
+        raise EvaluationException(
+            f"Failed to parse user response",
+            detail=repr(e)
+        )
 
     try:
         ans = np.array(answer, dtype=np.float32)
     except Exception as e:
-        raise EvaluationException(f"Failed to parse correct answer",
-                                  detail=repr(e))
+        raise EvaluationException(
+            f"Failed to parse correct answer",
+            detail=repr(e)
+        )
 
     rtol = params.get("rtol", 0)
     atol = params.get("atol", 0)
 
     is_correct = np.allclose(res, ans, rtol=rtol, atol=atol)
 
-    # TODO: If incorrect, could compute which cells are, and return as feedback
+    if is_correct is False and params.get("feedback_for_incorrect_case", None) is not None:
+        return {
+            "is_correct": is_correct,
+            "feedback": params["feedback_for_incorrect_case"]
+        }
 
+    # TODO: If incorrect, could compute which cells are, and return as feedback
     return {"is_correct": is_correct}
 
 def process_element(element):

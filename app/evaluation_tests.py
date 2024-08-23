@@ -114,6 +114,15 @@ class TestEvaluationFunction(unittest.TestCase):
 
         self.assertEqual(response.get("is_correct"), False)
 
+    def test_2D_incorrect_with_custom_feedback(self):
+        response = [[1, 1], [1, 1]]
+        answer = [[1, 1], [1, 0]]
+
+        response = evaluation_function(response, answer, {"feedback_for_incorrect_case": "Custom feedback"})
+
+        self.assertEqual(response.get("is_correct"), False)
+        self.assertEqual(response["feedback"], "Custom feedback")
+
 #    def test_3D_correct(self):
 #        response = [[[1, 1], [2, 1]], [[2, 1.2], [2, 2]]],
 #        answer = [[[1, 1], [2, 1.1]], [[2, 1], [2, 2]]]
