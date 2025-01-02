@@ -44,7 +44,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = evaluation_function(response, answer, {})
 
         self.assertEqual(response["is_correct"], False)
-        self.assertEqual(response["feedback"], "Response has empty fields.")
+        self.assertEqual(response["feedback"], "Response has at least one empty field.")
 
     def test_no_tolerance_correct(self):
         response = [1, 2]
@@ -132,6 +132,26 @@ class TestEvaluationFunction(unittest.TestCase):
 #
 #        self.assertEqual(response.get("is_correct"), True)
 
+    def test_answer_not_array_of_numbers(self):
+        response = [[1, 1], [1, 1]]
+        answer = [[1, 1], [1, "a"]]
+
+        self.assertRaises(
+            Exception,
+            evaluation_function,
+            response,
+            answer,
+            {},
+        )
+
+    def test_response_not_array_of_numbers(self):
+        response = [[1, 1], [1, "a"]]
+        answer = [[1, 1], [1, 0]]
+
+        response = evaluation_function(response, answer, {})
+
+        self.assertEqual(response.get("is_correct"), False)
+        self.assertEqual(response["feedback"], "Only numbers are permitted.")
 
 if __name__ == "__main__":
     unittest.main()
