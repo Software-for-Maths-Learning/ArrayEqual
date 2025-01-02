@@ -23,29 +23,41 @@ def evaluation_function(response, answer, params) -> dict:
     to output the grading response.
     """
 
-    answer_ok = process_element(answer)
-    if not answer_ok:
+    try:
+        process_element(answer)
+    except ValueError:
+        raise Exception("Answer has at least one field that is not a number.")
+    except Exception:
         raise Exception("Answer has empty fields.")
-    response_ok = process_element(response)
-    if not response_ok:
+        return {"is_correct": False}
+
+    feedback = ""
+    try:
+        process_element(response)
+    except ValueError:
+        feedback = "Only numbers are permitted."
+    except Exception:
+        feedback = "Response has at least one empty field."
+
+    if len(feedback) > 0:
         return {
             "is_correct": False,
-            "feedback": "Response has empty fields."
+            "feedback": feedback,
         }
 
     try:
-        res = np.array(response, dtype=np.float32)
-    except Exception as e:
+        ans = np.array(answer, dtype=np.float32)
+    except ValueError as e:
         raise EvaluationException(
-            f"Failed to parse user response",
+            f"Failed to parse correct answer",
             detail=repr(e)
         )
 
     try:
-        ans = np.array(answer, dtype=np.float32)
-    except Exception as e:
+        res = np.array(response, dtype=np.float32)
+    except ValueError as e:
         raise EvaluationException(
-            f"Failed to parse correct answer",
+            f"Failed to parse response",
             detail=repr(e)
         )
 
@@ -65,14 +77,14 @@ def evaluation_function(response, answer, params) -> dict:
 
 def process_element(element):
     is_ok = True
-    if isinstance(element,list):
+    if isinstance(element, list):
         for e in element:
-            is_ok = process_element(e)
+            process_element(e)
     else:
-        if isinstance(element,str):
+        if isinstance(element, str):
             element = element.strip()
             if len(element) == 0 or "element" == "undefined":
-                is_ok = False
+                raise Exception("Contains an empty element")
             else:
                 element = float(element)
-    return is_ok
+    return
